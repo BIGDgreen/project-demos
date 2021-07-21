@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue@next"></script>
+  <style>
+    .demo {
+      font-family: sans-serif;
+      border: 1px solid #eee;
+      border-radius: 2px;
+      padding: 20px 30px;
+      margin-top: 1em;
+      margin-bottom: 40px;
+      user-select: none;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <div id="hello-vue" class="demo">
+    <span v-bind:title="message">
+      12312412
+    </span>
+    <input v-model="message" @keyup.ctrl="clear" />
+    {{ message }}
+  </div>
+  <div id="counter">
+    Counter: {{ counter }}s
+    <div>
+      {{ computedNum }}
+    </div>
+    <button v-on:[eventname]="stopTime" v-if="">停止计时</button>
+  </div>
+  <div id="component-app" class="demo">
+    <ol>
+      <todo-item v-for="item in groceryList" :todo="item" v-bind:key="item.id"></todo-item>
+    </ol>
+    <table>
+      <tr v-is="'todo-table'"></tr>
+    </table>
+  </div>
+  <script>
+    const HelloVueApp = {
+      data() {
+        return {
+          message: 'Hello Vue!!'
+        }
+      },
+      methods: {
+        clear() {
+          console.log('ctrl triggered')
+        }
+      }
+    }
+    const Counter = {
+      data() {
+        return {
+          counter: 0,
+          timer: null,
+          eventname: 'click',
+        }
+      },
+      computed: {
+        computedNum() {
+          return Date.now()
+        }
+      },
+      mounted() {
+        this.timer = setInterval(() => {
+          this.counter++
+        }, 1000)
+      },
+      methods: {
+        stopTime() {
+          clearInterval(this.timer)
+        }
+      }
+    }
+    const ComponentApp = {
+      data() {
+        return {
+           groceryList: [
+            { id: 0, text: 'Vegetables' },
+            { id: 1, text: 'Cheese' },
+            { id: 2, text: 'Whatever else humans are supposed to eat' }
+          ]
+        }
+      }
+    }
+    const componentApp = Vue.createApp(ComponentApp)
+    componentApp.component('todo-item', {
+      props: ['todo'],
+      // template: `<li>{{ todo.text }}</li>`,
+      render() {
+        return Vue.h(
+          'li',
+          {},
+          this.todo.text
+        )
+      },
+    })
+    componentApp.component('todo-table', {
+        template: `<tr>aaa</tr>`,
+      })
+    Vue.createApp(HelloVueApp).mount('#hello-vue')
+    Vue.createApp(Counter).mount('#counter')
+    componentApp.mount('#component-app')
+  </script>
+</body>
+</html>

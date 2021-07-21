@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "lib": ["ES6", "DOM"],
+    "experimentalDecorators": true,
+    "types": [
+      "reflect-metadata"
+    ]
+  }
+}
